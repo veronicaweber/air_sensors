@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+
 #upload packages
 
 library(tidyr)
@@ -87,8 +88,10 @@ lexington_pm2.5_avg <- lexington_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(lexington_pm2.5_avg, lexington_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-lexington_sensor_final <- full_join(temp_humidity, lexington_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a new column
+lexington_sensor_final <- full_join(temp_humidity, lexington_channel_b_pressure) %>% 
+  mutate(sensor_name = "lexington") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 
 ```
@@ -166,8 +169,10 @@ psu_6th_baker_pm2.5_avg <- psu_6th_baker_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(psu_6th_baker_pm2.5_avg, psu_6th_baker_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-psu_6th_baker_sensor_final <- full_join(temp_humidity, psu_6th_baker_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a new column
+psu_6th_baker_sensor_final <- full_join(temp_humidity, psu_6th_baker_channel_b_pressure) %>% 
+  mutate(sensor_name = "psu_6th_baker") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
@@ -241,8 +246,9 @@ psu_baltimore_pm2.5_avg <- psu_baltimore_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(psu_baltimore_pm2.5_avg, psu_baltimore_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-psu_baltimore_sensor_final <- full_join(temp_humidity, psu_baltimore_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a new column
+psu_baltimore_sensor_final <- full_join(temp_humidity, psu_baltimore_channel_b_pressure) %>%  mutate(sensor_name = "psu_baltimore") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
@@ -322,9 +328,11 @@ temp_humidity <- full_join(psu_central_tacoma_pm2.5_avg, psu_central_tacoma_chan
 # rejoin with pressure data from channel b
 psu_central_tacoma_sensor <- full_join(temp_humidity, psu_central_tacoma_channel_b_pressure)
 
-# for some reason there is duplicate data - where channels' pm2.5 data is repeated twice, use base code distinct to remove the duplicates
-psu_central_tacoma_sensor_final <- psu_central_tacoma_sensor_final %>% 
-distinct(date_time, .keep_all = TRUE)
+# for some reason there is duplicate data - where channels' pm2.5 data is repeated twice, use base code distinct to remove the duplicates, also add sensor name to a new column 
+psu_central_tacoma_sensor_final <- psu_central_tacoma_sensor %>% 
+distinct(date_time, .keep_all = TRUE) %>% 
+    mutate(sensor_name = "psu_central_tacoma") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 ```
 
 
@@ -399,8 +407,10 @@ psu_south_tacoma_pm2.5_avg <- psu_south_tacoma_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(psu_south_tacoma_pm2.5_avg, psu_south_tacoma_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-psu_south_tacoma_sensor_final <- full_join(temp_humidity, psu_south_tacoma_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a column
+psu_south_tacoma_sensor_final <- full_join(temp_humidity, psu_south_tacoma_channel_b_pressure) %>% 
+  mutate(sensor_name = "psu_south_tacoma") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
@@ -475,9 +485,10 @@ psu_titlow_pm2.5_avg <- psu_titlow_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(psu_titlow_pm2.5_avg, psu_titlow_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-psu_titlow_sensor_final <- full_join(temp_humidity, psu_titlow_channel_b_pressure)
-
+# rejoin with pressure data from channel b and add csensor name to a new column
+psu_titlow_sensor_final <- full_join(temp_humidity, psu_titlow_channel_b_pressure) %>% 
+  mutate(sensor_name = "psu_titlow") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 ```
 
 
@@ -552,8 +563,10 @@ psu_jefferson_pm2.5_avg <- psu_jefferson_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(psu_jefferson_pm2.5_avg, psu_jefferson_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-psu_jefferson_sensor_final <- full_join(temp_humidity, psu_jefferson_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name into a new column
+psu_jefferson_sensor_final <- full_join(temp_humidity, psu_jefferson_channel_b_pressure) %>% 
+  mutate(sensor_name = "psu_jefferson") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
@@ -628,9 +641,10 @@ pt_woodworth_pm2.5_avg <- pt_woodworth_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(pt_woodworth_pm2.5_avg, pt_woodworth_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-pt_woodworth_sensor_final <- full_join(temp_humidity, pt_woodworth_channel_b_pressure)
-
+# rejoin with pressure data from channel b and add sensor name to a new column
+pt_woodworth_sensor_final <- full_join(temp_humidity, pt_woodworth_channel_b_pressure) %>% 
+  mutate(sensor_name = "pt_woodworth") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
@@ -705,8 +719,11 @@ tacoma_alexander_pm2.5_avg <- tacoma_alexander_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(tacoma_alexander_pm2.5_avg, tacoma_alexander_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-tacoma_alexander_sensor_final <- full_join(temp_humidity, tacoma_alexander_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a column in order to identify it 
+tacoma_alexander_sensor_final <- full_join(temp_humidity, tacoma_alexander_channel_b_pressure) %>% 
+    mutate(sensor_name = "tacoma_alexander") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
+
 ```
 
 ```{r}
@@ -780,11 +797,24 @@ pointe_woodworth_pm2.5_avg <- pointe_woodworth_channels_merge %>%
 # rejoin with temp, humidity data from channel a 
 temp_humidity <- full_join(pointe_woodworth_pm2.5_avg, pointe_woodworth_channel_a_temp_humidity)
 
-# rejoin with pressure data from channel b
-pointe_woodworth_sensor_final <- full_join(temp_humidity, pointe_woodworth_channel_b_pressure)
+# rejoin with pressure data from channel b and add sensor name to a new column in order to identify it 
+pointe_woodworth_sensor_final <- full_join(temp_humidity, pointe_woodworth_channel_b_pressure) %>% 
+  mutate(sensor_name = "pointe_woodworth") %>% 
+  select(sensor_name, date_time, pm2.5_avg, temperature, humidity, pressure)
 
 ```
 
+```{r}
+ tacoma_sensors_merged <- do.call("rbind", list(lexington_sensor_final, 
+                                                psu_6th_baker_sensor_final, 
+                                                psu_baltimore_sensor_final,
+                                                psu_central_tacoma_sensor_final,
+                                                psu_jefferson_sensor_final, 
+                                                psu_south_tacoma_sensor_final, 
+                                                psu_titlow_sensor_final,
+                                                pt_woodworth_sensor_final,
+                                                tacoma_alexander_sensor_final))
+```
 
 
 
