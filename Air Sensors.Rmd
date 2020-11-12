@@ -1,0 +1,56 @@
+---
+title: "air sensors average"
+author: "Veronica Weber"
+date: "11/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#upload packages
+library(tidyr)
+library(janitor)
+library(tidyverse)
+
+# import lexington sensor a and tidy data, selecting only the date/time, pm 2.5 concentrations, temp (fahrenheit) and humidity(percent), add a new column to designate which sensor 
+lexington_channel_a <- read_csv("north_lexington_a.csv") %>% 
+ clean_names() %>% 
+  rename("date_time" = created_at,
+         "pm_2.5" = pm2_5_atm_ug_m3,
+         "temperature" = temperature_f,
+         "humidity" = humidity_percent) %>% 
+  mutate(lexington_channel_a = "lexington_channel_a") %>% 
+  select(lexington_channel_a,
+         date_time,
+         pm_2.5)
+
+# import Lexington sensor channel B - sensor b only contains PM2.5 concentrations and pressure, Tidy data as done prior in channel a add a new column to designate which sensor 
+lexington_channel_b <- read_csv("north_lexington_b.csv") %>% 
+ clean_names() %>% 
+  rename("date_time" = created_at,
+         "pm_2.5" = pm2_5_atm_ug_m3,
+         "pressure" = pressure_hpa) %>% 
+  mutate(lexington_channel_b = "lexington_channel_b") %>% 
+  select(lexington_channel_b,
+         date_time,
+         pm_2.5)
+```
+
+```{r}
+# next step is to merge the 2 data frames together
+lexington_a_and_b <- full_join(lexington_channel_a, 
+                               lexington_channel_b,
+                               by = c("date_time"))
+
+lexington_channels <- lexington_a_and_b %>% 
+  rename(c("channel_a_pm2.5" = pm_2.5.x,
+           "channel_b_pm2.5" = pm_2.5.y)) %>% 
+  pivot_longer(c('channel_a_pm2.5', 'channel_b_pm2.5'), names_to = "channel", values_to = "pm2.5") %>% 
+  select(channel, date_time, pm2.5)
+
+lexington_final <- full_join(lexington_channels, lexington_channel_a)
+
+
